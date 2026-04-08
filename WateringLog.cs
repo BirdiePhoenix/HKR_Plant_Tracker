@@ -16,5 +16,16 @@ namespace HKR_Plant_Tracker
             this.logDate = LogDate;
             this.logNotes = LogNotes;
         }
+
+        public void PrintLog()
+        {
+            Console.WriteLine("Plant Id: " + plantID);
+            Console.WriteLine("Last watered: " + logDate);
+            Console.WriteLine("Notes: " + logNotes);
+        }
+
+        public string GetPlantID() {  return plantID; }
+        public DateTime GetLogDate() { return logDate; }
+        public string GetLogNotes() { return logNotes; }
     }
 }

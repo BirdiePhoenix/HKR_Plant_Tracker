@@ -18,5 +18,18 @@ namespace HKR_Plant_Tracker
             this.plantLocation = PlantLocation;
             this.wateringDays = WateringDays;
         }
+
+        public void PrintDetails()
+        {
+            Console.WriteLine("Plant ID: " + plantID);
+            Console.WriteLine("Plant name: " + plantName);
+            Console.WriteLine("Location: " + plantLocation);
+            Console.WriteLine("Watering interval" + wateringDays);
+        }
+
+        public string GetPlantID() {  return plantID; }
+        public string GetPlantName() { return plantName; }
+        public string GetPlantLocation() { return plantLocation; }
+        public int GetWateringDays() { return wateringDays; }
     }
 }
