@@ -19,12 +19,12 @@ namespace HKR_Plant_Tracker
 
         public void PrintLog()
         {
-            Console.WriteLine("Plant Id: " + plantID);
-            Console.WriteLine("Last watered: " + logDate);
+            Console.WriteLine($"Plant ID: {plantID}");
+            Console.WriteLine("Last watered: " + logDate + " ago."); //Calculate days
             Console.WriteLine("Notes: " + logNotes);
         }
 
-        public string GetPlantID() {  return plantID; }
+        public string GetPlantID() { return plantID; }
         public DateTime GetLogDate() { return logDate; }
         public string GetLogNotes() { return logNotes; }
     }

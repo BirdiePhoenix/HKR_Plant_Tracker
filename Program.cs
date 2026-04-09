@@ -1,2 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+namespace HKR_Plant_Tracker
+{
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Plant Tracker \n **********");
+
+
+        }
+    }
+}
