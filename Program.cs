@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HKR_Plant_Tracker
 {
@@ -6,6 +7,8 @@ namespace HKR_Plant_Tracker
     {
         private static void Main(string[] args)
         {
+            List<Plant> plantList = new List<Plant>();
+            List<WateringLog> wateringLogs = new List<WateringLog>();
             string menuChoice;
             Console.WriteLine("PLANT TRACKER \n **********\n");
 
@@ -18,7 +21,7 @@ namespace HKR_Plant_Tracker
                 switch (menuChoice)
                 {
                     case "1":
-                        PlantMenu();
+                        PlantMenu(plantList);
                         break;
                     case "2":
                         LogMenu();
@@ -26,12 +29,22 @@ namespace HKR_Plant_Tracker
                     case "9":
                         break;
                 }
+                if(menuChoice == "9")
+                {
+                    break;
+                }
+              
             } while (menuChoice != "9");
         }
 
-        static void PlantMenu()
+        static void PlantMenu(List<Plant> plantList)
         {
             string menuChoice;
+            string plantID;
+            string plantName;
+            string plantLocation;
+            int wateringDays;
+            bool plantExist = false;
             Console.WriteLine("PLANT MENU\n");
 
             do
@@ -40,22 +53,68 @@ namespace HKR_Plant_Tracker
 
                 menuChoice = Console.ReadLine();
 
-                switch (menuChoice)
+                switch (menuChoice) //TO UPPER CASE
                 {
                     case "1":
                         Console.WriteLine("Add plant\n");
+                        Console.WriteLine("Insert plantID: ");
+                        plantID = Console.ReadLine();
+                        Console.WriteLine("Insert plant name: ");
+                        plantName = Console.ReadLine();
+                        Console.WriteLine("Insert plants location: ");
+                        plantLocation = Console.ReadLine();
+                        Console.WriteLine("Insert watering interval: ");
+                        wateringDays = Convert.ToInt32(Console.ReadLine());
+
+                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays);
+                        plantList.Add(plant);
                         break;
                     case "2":
                         Console.WriteLine("View plants\n");
+                        foreach(Plant _plant in plantList)
+                        {
+                            _plant.PrintDetails();
+                        }
                         break;
                     case "3":
                         Console.WriteLine("Delete plant\n");
+                        Console.WriteLine("Insert plant ID: ");
+                        plantID = Console.ReadLine();
+
+                        foreach(Plant _plant in plantList)
+                        {
+                            if(plantID == _plant.GetPlantID())
+                            {
+                                plantList.Remove(_plant);
+                                plantExist = true;
+                                break;
+                            }                                                     
+                        }
+
+                        if (!plantExist)
+                        {
+                            Console.WriteLine("That plant doesn't exist!");
+                        }
                         break;
                     case "4":
                         Console.WriteLine("Search plant\n");
+                        Console.WriteLine("Insert plant name: ");
+                        plantName = Console.ReadLine();
+
+                        foreach(Plant _plant in plantList)
+                        {
+                            if(plantName == _plant.GetPlantName())
+                            {
+                                _plant.PrintDetails();
+                            }
+                        }
                         break;
                     case "9":
                         break;
+                }
+                if (menuChoice == "9")
+                {
+                    break;
                 }
             } while (menuChoice != "9");
         }
@@ -84,6 +143,10 @@ namespace HKR_Plant_Tracker
                         break;
                     case "9":
                         break;
+                }
+                if (menuChoice == "9")
+                {
+                    break;
                 }
             } while (menuChoice != "9");
         }

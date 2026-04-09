@@ -24,7 +24,7 @@ namespace HKR_Plant_Tracker
             Console.WriteLine($"Plant ID: {plantID}");
             Console.WriteLine($"Plant name: {plantName}");
             Console.WriteLine($"Location: {plantLocation}");
-            Console.WriteLine($"Watering interval: {wateringDays}");
+            Console.WriteLine($"Watering interval: {wateringDays}\n");
         }
 
         public string GetPlantID() { return plantID; }
