@@ -8,7 +8,7 @@ namespace HKR_Plant_Tracker
         private static void Main(string[] args)
         {
             List<Plant> plantList = new List<Plant>();
-            List<WateringLog> wateringLogs = new List<WateringLog>();
+            List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
             Console.WriteLine("PLANT TRACKER \n **********\n");
 
@@ -24,7 +24,7 @@ namespace HKR_Plant_Tracker
                         PlantMenu(plantList);
                         break;
                     case "2":
-                        LogMenu();
+                        LogMenu(logList);
                         break;
                     case "9":
                         break;
@@ -119,9 +119,12 @@ namespace HKR_Plant_Tracker
             } while (menuChoice != "9");
         }
 
-        static void LogMenu()
+        static void LogMenu(List<WateringLog> logList)
         {
             string menuChoice;
+            string plantID;
+            DateTime logDate;
+            string logNotes;
             Console.WriteLine("LOG MENU\n");
 
             do
@@ -134,12 +137,34 @@ namespace HKR_Plant_Tracker
                 {
                     case "1":
                         Console.WriteLine("Watering\n");
+                        Console.WriteLine("Insert plant id: ");
+                        plantID = Console.ReadLine(); //Check if exists
+                        Console.WriteLine("Insert notes: ");
+                        logNotes = Console.ReadLine();
+                        logDate = DateTime.Now;
+
+                        WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);
+                        logList.Add(wateringLog);
                         break;
                     case "2":
                         Console.WriteLine("Viewing all logs\n");
+                        foreach(WateringLog _wateringLog in logList)
+                        {
+                            _wateringLog.PrintLog();
+                        }
                         break;
                     case "3":
                         Console.WriteLine("Viewing plant log\n");
+                        Console.Write("Insert plant id: ");
+                        plantID = Console.ReadLine();
+
+                        foreach(WateringLog _wateringLog in logList)
+                        {
+                            if(plantID == _wateringLog.GetPlantID())
+                            {
+                                _wateringLog.PrintLog();
+                            }
+                        }
                         break;
                     case "9":
                         break;
