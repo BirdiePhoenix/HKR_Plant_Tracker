@@ -10,6 +10,7 @@ namespace HKR_Plant_Tracker
             List<Plant> plantList = new List<Plant>();
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
+
             Console.WriteLine("PLANT TRACKER \n **********\n");
 
             do
@@ -35,6 +36,44 @@ namespace HKR_Plant_Tracker
                 }
               
             } while (menuChoice != "9");
+        }
+
+        static void StartUp(List<WateringLog> logList, List<Plant> plantList) //DESIGN CHOICE
+        {
+            Console.WriteLine("These plants needs to be watered today: ");
+            foreach (Plant _plant in plantList)
+            {
+                foreach (WateringLog _log in logList)
+                {
+                    if(_log.GetLogDate() == DateOnly.FromDateTime(DateTime.Now).AddDays(-_plant.GetWateringDays()))
+                    {
+                        Console.WriteLine($"{_plant.GetPlantID()} needs to be watered today.");
+                    }
+                }
+            }
+            
+
+            /*bool isInList = false;
+            logList.Reverse(); //Reversing list to get most recent first
+            List<WateringLog> mostRecentWatering = new List<WateringLog>();
+            foreach (WateringLog _log in logList)
+            {
+                foreach (WateringLog log in mostRecentWatering) 
+                { 
+                    if(_log.GetPlantID() == log.GetPlantID())
+                    {
+                        isInList = true;
+                        break;
+                    }
+                }
+                if (!isInList) 
+                {
+                   mostRecentWatering.Add(_log); 
+                }
+                isInList = false;
+            }
+
+            logList.Reverse();*/
         }
 
         static void PlantMenu(List<Plant> plantList)
@@ -123,7 +162,7 @@ namespace HKR_Plant_Tracker
         {
             string menuChoice;
             string plantID;
-            DateTime logDate;
+            DateOnly logDate; //DESIGN CHOICE
             string logNotes;
             Console.WriteLine("LOG MENU\n");
 
@@ -141,7 +180,7 @@ namespace HKR_Plant_Tracker
                         plantID = Console.ReadLine(); //Check if exists
                         Console.WriteLine("Insert notes: ");
                         logNotes = Console.ReadLine();
-                        logDate = DateTime.Now;
+                        logDate = DateOnly.FromDateTime(DateTime.Now);
 
                         WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);
                         logList.Add(wateringLog);

@@ -9,9 +9,9 @@ namespace HKR_Plant_Tracker
     internal class WateringLog
     {
         private string plantID;
-        private DateTime logDate;
+        private DateOnly logDate;
         private string logNotes;
-        public WateringLog(string PlantID, DateTime LogDate, string LogNotes) {
+        public WateringLog(string PlantID, DateOnly LogDate, string LogNotes) {
             this.plantID = PlantID;
             this.logDate = LogDate;
             this.logNotes = LogNotes;
@@ -25,7 +25,7 @@ namespace HKR_Plant_Tracker
         }
 
         public string GetPlantID() { return plantID; }
-        public DateTime GetLogDate() { return logDate; }
+        public DateOnly GetLogDate() { return logDate; }
         public string GetLogNotes() { return logNotes; }
     }
 }
