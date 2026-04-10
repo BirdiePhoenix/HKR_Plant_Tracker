@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace HKR_Plant_Tracker
 {
@@ -10,6 +11,21 @@ namespace HKR_Plant_Tracker
             List<Plant> plantList = new List<Plant>();
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
+
+            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 2);
+            Plant plant2 = new Plant("PLT002", "Orchid", "Living Room", 4);
+            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 1);
+            plantList.Add(plant); plantList.Add(plant2); plantList.Add(plant3);
+            
+            var hebrewCalendar = new HebrewCalendar();
+            DateOnly dateTime1 = new DateOnly(2026, 4, 8, hebrewCalendar);
+            DateOnly dateTime2 = new DateOnly(2026, 3, 28, hebrewCalendar);
+            DateOnly dateTime3 = new DateOnly(2026, 4, 2, hebrewCalendar);
+
+            WateringLog log1 = new WateringLog("PLT001", dateTime1, "Watered the Tulip");
+            WateringLog log2 = new WateringLog("PLT002", dateTime2, "Watered the Orchid");
+            WateringLog log3 = new WateringLog("PLT002", dateTime3, "Spiced the Orchid");
+            logList.Add(log1); logList.Add(log2); logList.Add(log3);
 
             Console.WriteLine("PLANT TRACKER \n **********\n");
 
@@ -105,7 +121,7 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Insert watering interval: ");
                         wateringDays = Convert.ToInt32(Console.ReadLine());
 
-                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays);
+                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays); //ADD LOG
                         plantList.Add(plant);
                         break;
                     case "2":
