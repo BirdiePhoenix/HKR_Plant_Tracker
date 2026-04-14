@@ -17,10 +17,9 @@ namespace HKR_Plant_Tracker
             Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 1);
             plantList.Add(plant); plantList.Add(plant2); plantList.Add(plant3);
             
-            var hebrewCalendar = new HebrewCalendar();
-            DateOnly dateTime1 = new DateOnly(2026, 4, 8, hebrewCalendar);
-            DateOnly dateTime2 = new DateOnly(2026, 3, 28, hebrewCalendar);
-            DateOnly dateTime3 = new DateOnly(2026, 4, 2, hebrewCalendar);
+            DateTime dateTime1 = new DateTime(2026, 4, 8);
+            DateTime dateTime2 = new DateTime(2026, 3, 28);
+            DateTime dateTime3 = new DateTime(2026, 4, 2);
 
             WateringLog log1 = new WateringLog("PLT001", dateTime1, "Watered the Tulip");
             WateringLog log2 = new WateringLog("PLT002", dateTime2, "Watered the Orchid");
@@ -28,6 +27,8 @@ namespace HKR_Plant_Tracker
             logList.Add(log1); logList.Add(log2); logList.Add(log3);
 
             Console.WriteLine("PLANT TRACKER \n **********\n");
+
+            StartUp(logList, plantList);
 
             do
             {
@@ -56,40 +57,39 @@ namespace HKR_Plant_Tracker
 
         static void StartUp(List<WateringLog> logList, List<Plant> plantList) //DESIGN CHOICE
         {
+            
             Console.WriteLine("These plants needs to be watered today: ");
             foreach (Plant _plant in plantList)
             {
                 foreach (WateringLog _log in logList)
                 {
-                    if(_log.GetLogDate() == DateOnly.FromDateTime(DateTime.Now).AddDays(-_plant.GetWateringDays()))
+                    if(_plant.GetPlantID() == _log.GetPlantID())
                     {
-                        Console.WriteLine($"{_plant.GetPlantID()} needs to be watered today.");
+                        int dayCount = DayCal(_log);
+                        if (_log.GetLogDate().AddDays(dayCount).Date == DateTime.Now.Date)
+                        {
+                            Console.WriteLine($"{_plant.GetPlantID()} needs to be watered today.");
+                        }
                     }
                 }
-            }
-            
+            }         
+        }
 
-            /*bool isInList = false;
-            logList.Reverse(); //Reversing list to get most recent first
-            List<WateringLog> mostRecentWatering = new List<WateringLog>();
-            foreach (WateringLog _log in logList)
+        static int DayCal(WateringLog log)
+        {
+            int dayCount = 0;
+            DateTime logDate = log.GetLogDate();
+
+            while (true)
             {
-                foreach (WateringLog log in mostRecentWatering) 
-                { 
-                    if(_log.GetPlantID() == log.GetPlantID())
-                    {
-                        isInList = true;
-                        break;
-                    }
-                }
-                if (!isInList) 
+                if (logDate.Date == DateTime.Now.Date)
                 {
-                   mostRecentWatering.Add(_log); 
+                    break;
                 }
-                isInList = false;
+                logDate = logDate.AddDays(1);
+                dayCount++;
             }
-
-            logList.Reverse();*/
+            return dayCount;
         }
 
         static void PlantMenu(List<Plant> plantList)
@@ -178,7 +178,7 @@ namespace HKR_Plant_Tracker
         {
             string menuChoice;
             string plantID;
-            DateOnly logDate; //DESIGN CHOICE
+            DateTime logDate; //DESIGN CHOICE
             string logNotes;
             Console.WriteLine("LOG MENU\n");
 
@@ -196,7 +196,7 @@ namespace HKR_Plant_Tracker
                         plantID = Console.ReadLine(); //Check if exists
                         Console.WriteLine("Insert notes: ");
                         logNotes = Console.ReadLine();
-                        logDate = DateOnly.FromDateTime(DateTime.Now);
+                        logDate = DateTime.Now;
 
                         WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);
                         logList.Add(wateringLog);
