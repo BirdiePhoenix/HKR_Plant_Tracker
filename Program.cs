@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace HKR_Plant_Tracker
 {
@@ -73,7 +74,8 @@ namespace HKR_Plant_Tracker
             string plantID;
             string plantName;
             string plantLocation;
-            int wateringDays;
+            string wateringDays;
+            int wateringInterval;
             bool plantExist = false;
             Console.WriteLine("PLANT MENU\n");
 
@@ -86,17 +88,45 @@ namespace HKR_Plant_Tracker
                 switch (menuChoice) //TO UPPER CASE
                 {
                     case "1":
-                        Console.WriteLine("Add plant\n");
+                        Console.WriteLine("Add new plant\n");  
+                        
+                        //PLANT ID
                         Console.WriteLine("Insert plantID: ");
-                        plantID = Console.ReadLine();
+                        do
+                        {
+                            plantID = Console.ReadLine();
+                            plantExist = CheckIfPlant(plantList, plantID);
+                            if (plantExist)
+                            {
+                                Console.WriteLine("A plant with that ID does already exists. Insert a new.");
+                            }
+                        } while (plantExist); 
+                        
+                        //PLANT NAME
                         Console.WriteLine("Insert plant name: ");
                         plantName = Console.ReadLine();
+
+                        //LOCATION
                         Console.WriteLine("Insert plants location: ");
                         plantLocation = Console.ReadLine();
-                        Console.WriteLine("Insert watering interval: ");
-                        wateringDays = Convert.ToInt32(Console.ReadLine());
 
-                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays, DateTime.Now); //ADD LOG
+                        //WATERING INTERVAL
+                        Console.WriteLine("Insert watering interval: ");
+                        do
+                        {
+                            wateringDays = IntChecker();
+                            wateringInterval = Convert.ToInt32(wateringDays);
+                            if(wateringInterval < 1)
+                            {
+                                Console.WriteLine("Watering interval can't be less than 1!");
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        } while (true);                        
+
+                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringInterval, DateTime.Now); //ADD LOG
                         plantList.Add(plant);
                         break;
                     case "2":
@@ -110,18 +140,20 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Delete plant\n");
                         Console.WriteLine("Insert plant ID: ");
                         plantID = Console.ReadLine();
+                        plantExist = CheckIfPlant(plantList, plantID);
 
-                        foreach (Plant _plant in plantList)
+                        if (plantExist)
                         {
-                            if (plantID == _plant.GetPlantID())
+                            foreach (Plant _plant in plantList) //KOLLA OM BATTRE SATT
                             {
-                                plantList.Remove(_plant);
-                                plantExist = true;
-                                break;
+                                if (plantID == _plant.GetPlantID())
+                                {
+                                    plantList.Remove(_plant);
+                                    break;
+                                }
                             }
                         }
-
-                        if (!plantExist)
+                        else
                         {
                             Console.WriteLine("That plant doesn't exist!");
                         }
@@ -129,7 +161,7 @@ namespace HKR_Plant_Tracker
                     case "4":
                         Console.WriteLine("Search plant\n");
                         Console.WriteLine("Insert plant name: ");
-                        plantName = Console.ReadLine();
+                        plantName = Console.ReadLine(); //IF EXISTS?
 
                         foreach (Plant _plant in plantList)
                         {
@@ -158,6 +190,7 @@ namespace HKR_Plant_Tracker
             string plantID;
             DateTime logDate; //DESIGN CHOICE
             string logNotes;
+            bool plantExist = false;
             Console.WriteLine("LOG MENU\n");
 
             do
@@ -171,7 +204,16 @@ namespace HKR_Plant_Tracker
                     case "1":
                         Console.WriteLine("Watering\n");
                         Console.WriteLine("Insert plant id: ");
-                        plantID = Console.ReadLine(); //Check if exists
+                        do
+                        {
+                            plantID = Console.ReadLine();
+                            plantExist = CheckIfPlant(plantList, plantID);
+                            if (!plantExist)
+                            {
+                                Console.WriteLine("A plant with that ID doesn't exist. Insert an existing one");
+                            }
+                        } while (!plantExist);
+                        //Check if exists
                         Console.WriteLine("Insert notes: ");
                         logNotes = Console.ReadLine();
                         logDate = DateTime.Now;
@@ -198,15 +240,23 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Viewing plant log\n");
                         Console.Write("Insert plant id: ");
                         plantID = Console.ReadLine();
+                        plantExist = CheckIfPlant(plantList, plantID);
 
-                        foreach (WateringLog _wateringLog in logList)
+                        if (plantExist)
                         {
-                            if (plantID == _wateringLog.GetPlantID())
+                            foreach (WateringLog _wateringLog in logList)
                             {
-                                _wateringLog.PrintLog();
+                                if (plantID == _wateringLog.GetPlantID())
+                                {
+                                    _wateringLog.PrintLog();
+                                }
                             }
                         }
-                        break;
+                        else
+                        {
+                            Console.WriteLine("A plant with that ID doesn't exist"); //LOOP? + LOOP OR NOT DESIGN
+                        }
+                            break;
                     case "9":
                         break;
                     default:
@@ -256,11 +306,11 @@ namespace HKR_Plant_Tracker
 
         static string IntChecker()
         {
-            string menuChoice;
+            string checkThisInt;
             do
             {
-                menuChoice = Console.ReadLine();
-                if (int.TryParse(menuChoice, out int choice))
+                checkThisInt = Console.ReadLine();
+                if (int.TryParse(checkThisInt, out int choice))
                 {
                     break;
                 }
@@ -270,7 +320,23 @@ namespace HKR_Plant_Tracker
                 }
             } while (true);
 
-            return menuChoice;
+            return checkThisInt;
+        }
+
+        static bool CheckIfPlant(List<Plant> plantList, string plantID)
+        {
+            bool plantExists = false;
+            
+            foreach (Plant _plant in plantList)
+            {
+                if(_plant.GetPlantID() == plantID)
+                {
+                    plantExists = true; 
+                    break;
+                }
+            }
+                
+            return plantExists;
         }
     }
 }
