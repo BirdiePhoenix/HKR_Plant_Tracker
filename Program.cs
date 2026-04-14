@@ -12,9 +12,13 @@ namespace HKR_Plant_Tracker
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
 
-            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 2);
-            Plant plant2 = new Plant("PLT002", "Orchid", "Living Room", 4);
-            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 1);
+            DateTime dateAdded1 = new DateTime(2026, 3, 28);
+            DateTime dateAdded2 = new DateTime(2026, 3, 24);
+            DateTime dateAdded3 = new DateTime(2026, 4, 8);
+
+            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 2, dateAdded1);
+            Plant plant2 = new Plant("PLT002", "Orchid", "Living Room", 4, dateAdded2);
+            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 1, dateAdded3);
             plantList.Add(plant); plantList.Add(plant2); plantList.Add(plant3);
             
             DateTime dateTime1 = new DateTime(2026, 4, 8);
@@ -121,7 +125,7 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Insert watering interval: ");
                         wateringDays = Convert.ToInt32(Console.ReadLine());
 
-                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays); //ADD LOG
+                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringDays, DateTime.Now); //ADD LOG
                         plantList.Add(plant);
                         break;
                     case "2":
