@@ -46,7 +46,7 @@ namespace HKR_Plant_Tracker
                         PlantMenu(plantList);
                         break;
                     case "2":
-                        LogMenu(logList);
+                        LogMenu(logList, plantList);
                         break;
                     case "9":
                         break;
@@ -178,7 +178,7 @@ namespace HKR_Plant_Tracker
             } while (menuChoice != "9");
         }
 
-        static void LogMenu(List<WateringLog> logList)
+        static void LogMenu(List<WateringLog> logList, List<Plant> plantList)
         {
             string menuChoice;
             string plantID;
@@ -204,6 +204,14 @@ namespace HKR_Plant_Tracker
 
                         WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);
                         logList.Add(wateringLog);
+
+                        foreach(Plant _plant in plantList)
+                        {
+                            if(_plant.GetPlantID() == plantID)
+                            {
+                                _plant.SetLastWatered(DateTime.Now);
+                            }
+                        }
                         break;
                     case "2":
                         Console.WriteLine("Viewing all logs\n");
