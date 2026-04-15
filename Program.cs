@@ -49,7 +49,7 @@ namespace HKR_Plant_Tracker
                 switch (menuChoice)
                 {
                     case "1":
-                        PlantMenu(plantList);
+                        PlantMenu(plantList, logList);
                         break;
                     case "2":
                         LogMenu(logList, plantList);
@@ -59,16 +59,11 @@ namespace HKR_Plant_Tracker
                     default:
                         Console.WriteLine("Wrong input. Input 1-2 or 9");
                         break;
-                }
-                if(menuChoice == "9")
-                {
-                    break;
-                }
-              
+                }              
             } while (menuChoice != "9");
         }
 
-        static void PlantMenu(List<Plant> plantList)
+        static void PlantMenu(List<Plant> plantList, List<WateringLog> logList)
         {
             string menuChoice;
             string plantID;
@@ -87,7 +82,7 @@ namespace HKR_Plant_Tracker
 
                 switch (menuChoice) //TO UPPER CASE
                 {
-                    case "1":
+                    case "1": //ADD PLANT
                         Console.WriteLine("Add new plant\n");  
                         
                         //PLANT ID
@@ -126,17 +121,19 @@ namespace HKR_Plant_Tracker
                             }
                         } while (true);                        
 
-                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringInterval, DateTime.Now); //ADD LOG
+                        Plant plant = new Plant(plantID, plantName, plantLocation, wateringInterval, DateTime.Now);
                         plantList.Add(plant);
+                        WateringLog log = new WateringLog(plantID, DateTime.Now, "New plant");
+                        logList.Add(log);
                         break;
-                    case "2":
+                    case "2": //VIEW ALL PLANTS
                         Console.WriteLine("View plants\n");
                         foreach (Plant _plant in plantList)
                         {
                             _plant.PrintDetails();
                         }
                         break;
-                    case "3":
+                    case "3": //DELETE PLANT
                         Console.WriteLine("Delete plant\n");
                         Console.WriteLine("Insert plant ID: ");
                         plantID = Console.ReadLine();
@@ -158,7 +155,7 @@ namespace HKR_Plant_Tracker
                             Console.WriteLine("That plant doesn't exist!");
                         }
                         break;
-                    case "4":
+                    case "4": //SEARCH FOR PLANT
                         Console.WriteLine("Search plant\n");
                         Console.WriteLine("Insert plant name: ");
                         plantName = Console.ReadLine(); //IF EXISTS?
@@ -176,10 +173,6 @@ namespace HKR_Plant_Tracker
                     default:
                         Console.WriteLine("Wrong input. Input 1-4 or 9");
                         break;
-                }
-                if (menuChoice == "9")
-                {
-                    break;
                 }
             } while (menuChoice != "9");
         }
@@ -201,8 +194,9 @@ namespace HKR_Plant_Tracker
 
                 switch (menuChoice)
                 {
-                    case "1":
+                    case "1": //ADD LOG
                         Console.WriteLine("Watering\n");
+                        //PLANT ID
                         Console.WriteLine("Insert plant id: ");
                         do
                         {
@@ -213,7 +207,8 @@ namespace HKR_Plant_Tracker
                                 Console.WriteLine("A plant with that ID doesn't exist. Insert an existing one");
                             }
                         } while (!plantExist);
-                        //Check if exists
+
+                        //NOTES
                         Console.WriteLine("Insert notes: ");
                         logNotes = Console.ReadLine();
                         logDate = DateTime.Now;
@@ -221,6 +216,7 @@ namespace HKR_Plant_Tracker
                         WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);
                         logList.Add(wateringLog);
 
+                        //Updating the plants last watering
                         foreach (Plant _plant in plantList)
                         {
                             if (_plant.GetPlantID() == plantID)
@@ -229,14 +225,14 @@ namespace HKR_Plant_Tracker
                             }
                         }
                         break;
-                    case "2":
+                    case "2": //VIEW ALL LOGS
                         Console.WriteLine("Viewing all logs\n");
                         foreach (WateringLog _wateringLog in logList)
                         {
                             _wateringLog.PrintLog();
                         }
                         break;
-                    case "3":
+                    case "3": //VIEW LOGS FOR PLANT
                         Console.WriteLine("Viewing plant log\n");
                         Console.Write("Insert plant id: ");
                         plantID = Console.ReadLine();
@@ -262,11 +258,7 @@ namespace HKR_Plant_Tracker
                     default:
                         Console.WriteLine("Wrong input. Input 1-3 or 9");
                         break;
-                }
-                if (menuChoice == "9")
-                {
-                    break;
-                }
+                }              
             } while (menuChoice != "9");
         }
 
