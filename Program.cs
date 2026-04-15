@@ -10,6 +10,7 @@ namespace HKR_Plant_Tracker
     {
         private static void Main(string[] args)
         {
+            ErrorHandling errorHandling = new ErrorHandling();
             List<Plant> plantList = new List<Plant>();
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
@@ -45,15 +46,15 @@ namespace HKR_Plant_Tracker
             {
                 Console.WriteLine("1.Plant Menu\n2.Log Menu\n9. Exit\n");
 
-                menuChoice = IntChecker();
+                menuChoice = errorHandling.IntChecker();
 
                 switch (menuChoice)
                 {
                     case "1":
-                        PlantMenu(plantList, logList);
+                        PlantMenu(plantList, logList, errorHandling);
                         break;
                     case "2":
-                        LogMenu(logList, plantList);
+                        LogMenu(logList, plantList, errorHandling);
                         break;
                     case "9":
                         break;
@@ -64,7 +65,7 @@ namespace HKR_Plant_Tracker
             } while (menuChoice != "9");
         }
 
-        static void PlantMenu(List<Plant> plantList, List<WateringLog> logList)
+        static void PlantMenu(List<Plant> plantList, List<WateringLog> logList, ErrorHandling errorHandling)
         {
             string menuChoice;
             string plantID;
@@ -79,7 +80,7 @@ namespace HKR_Plant_Tracker
             {
                 Console.WriteLine("1.Add new plant\n2.View all plants\n3.Delete plant\n4.Search plant\n9.Back to main menu\n");
 
-                menuChoice = IntChecker();
+                menuChoice = errorHandling.IntChecker(); 
 
                 switch (menuChoice) //TO UPPER CASE
                 {
@@ -90,8 +91,8 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Insert a unique plantID: ");
                         do
                         {
-                            plantID = ProcessString();
-                            plantExist = CheckIfPlant(plantList, plantID);
+                            plantID = errorHandling.ProcessString();
+                            plantExist = errorHandling.CheckIfIDExists(plantList, plantID);
                             if (plantExist)
                             {
                                 Console.WriteLine("A plant with that ID does already exists. Insert a new.");
@@ -100,17 +101,17 @@ namespace HKR_Plant_Tracker
                         
                         //PLANT NAME
                         Console.WriteLine("Insert plant name: ");
-                        plantName = ProcessString();                                            
+                        plantName = errorHandling.ProcessString();                                            
 
                         //LOCATION
                         Console.WriteLine("Insert plants location: ");
-                        plantLocation = ProcessString();
+                        plantLocation = errorHandling.ProcessString();
 
                         //WATERING INTERVAL
                         Console.WriteLine("Insert watering interval: ");
                         do
                         {
-                            wateringDays = IntChecker();
+                            wateringDays = errorHandling.IntChecker();
                             wateringInterval = Convert.ToInt32(wateringDays);
                             if(wateringInterval < 1)
                             {
@@ -137,8 +138,8 @@ namespace HKR_Plant_Tracker
                     case "3": //DELETE PLANT
                         Console.WriteLine("Delete plant\n");
                         Console.WriteLine("Insert plant ID: ");
-                        plantID = ProcessString();
-                        plantExist = CheckIfPlant(plantList, plantID);
+                        plantID = errorHandling.ProcessString();
+                        plantExist = errorHandling.CheckIfIDExists(plantList, plantID);
 
                         if (plantExist)
                         {
@@ -153,22 +154,30 @@ namespace HKR_Plant_Tracker
                         }
                         else
                         {
-                            Console.WriteLine("That plant doesn't exist!");
+                            Console.WriteLine("A plant with that ID doesn't exists");
                         }
                         break;
                     case "4": //SEARCH FOR PLANT
                         Console.WriteLine("Search plant\n");
                         Console.WriteLine("Insert plant name: ");
-                        plantName = ProcessString(); //IF EXISTS?
+                        plantName = errorHandling.ProcessString();
+                        plantExist = errorHandling.CheckIfPlantNameExists(plantList, plantName);
 
-                        foreach (Plant _plant in plantList)
+                        if (plantExist)
                         {
-                            if (plantName == _plant.GetPlantName())
+                            foreach (Plant _plant in plantList)
                             {
-                                _plant.PrintDetails();
+                                if (plantName == _plant.GetPlantName())
+                                {
+                                    _plant.PrintDetails();
+                                }
                             }
                         }
-                        break;
+                        else
+                        {
+                            Console.WriteLine("A plant with that name doesn't exist");
+                        }
+                            break;
                     case "9":
                         break;
                     default:
@@ -178,7 +187,7 @@ namespace HKR_Plant_Tracker
             } while (menuChoice != "9");
         }
 
-        static void LogMenu(List<WateringLog> logList, List<Plant> plantList)
+        static void LogMenu(List<WateringLog> logList, List<Plant> plantList, ErrorHandling errorHandling)
         {
             string menuChoice;
             string plantID;
@@ -191,7 +200,7 @@ namespace HKR_Plant_Tracker
             {
                 Console.WriteLine("1.Log watering\n2.View all logs\n3.View log for plant\n9.Back to main menu\n");
 
-                menuChoice = IntChecker();
+                menuChoice = errorHandling.IntChecker();
 
                 switch (menuChoice)
                 {
@@ -201,8 +210,8 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Insert plant id: ");
                         do
                         {
-                            plantID = ProcessString();
-                            plantExist = CheckIfPlant(plantList, plantID);
+                            plantID = errorHandling.ProcessString();
+                            plantExist = errorHandling.CheckIfIDExists(plantList, plantID);
                             if (!plantExist)
                             {
                                 Console.WriteLine("A plant with that ID doesn't exist. Insert an existing one");
@@ -236,8 +245,8 @@ namespace HKR_Plant_Tracker
                     case "3": //VIEW LOGS FOR PLANT
                         Console.WriteLine("Viewing plant log\n");
                         Console.Write("Insert plant id: ");
-                        plantID = ProcessString();
-                        plantExist = CheckIfPlant(plantList, plantID);
+                        plantID = errorHandling.ProcessString();
+                        plantExist = errorHandling.CheckIfIDExists(plantList, plantID);
 
                         if (plantExist)
                         {
@@ -270,7 +279,6 @@ namespace HKR_Plant_Tracker
             foreach (Plant _plant in plantList)
             {
                 int dayCount = DayCal(_plant);
-                Console.WriteLine($"Day count = {dayCount} Watering Days = {_plant.GetWateringDays()}");
                 if (dayCount % _plant.GetWateringDays() == 0 && dayCount != 0)
                 {
                     
@@ -295,59 +303,6 @@ namespace HKR_Plant_Tracker
                 dayCount++;
             }
             return dayCount;
-        }
-
-        static string IntChecker()
-        {
-            string checkThisInt;
-            do
-            {
-                checkThisInt = Console.ReadLine();
-                if (int.TryParse(checkThisInt, out int choice))
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input. Use numbers!");
-                }
-            } while (true);
-
-            return checkThisInt;
-        }
-
-        static string ProcessString()
-        {
-            string checkThisString;
-            do
-            {
-                checkThisString = Console.ReadLine();
-                if(String.IsNullOrEmpty(checkThisString))
-                {
-                    Console.WriteLine("The string can't be empty!");
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-
-            return checkThisString;
-        }
-        static bool CheckIfPlant(List<Plant> plantList, string plantID)
-        {
-            bool plantExists = false;
-            
-            foreach (Plant _plant in plantList)
-            {
-                if(_plant.GetPlantID() == plantID)
-                {
-                    plantExists = true; 
-                    break;
-                }
-            }
-                
-            return plantExists;
-        }
+        }        
     }
 }
