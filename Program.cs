@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace HKR_Plant_Tracker
 {
@@ -86,10 +87,10 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Add new plant\n");  
                         
                         //PLANT ID
-                        Console.WriteLine("Insert plantID: ");
+                        Console.WriteLine("Insert a unique plantID: ");
                         do
                         {
-                            plantID = Console.ReadLine();
+                            plantID = ProcessString();
                             plantExist = CheckIfPlant(plantList, plantID);
                             if (plantExist)
                             {
@@ -99,11 +100,11 @@ namespace HKR_Plant_Tracker
                         
                         //PLANT NAME
                         Console.WriteLine("Insert plant name: ");
-                        plantName = Console.ReadLine();
+                        plantName = ProcessString();                                            
 
                         //LOCATION
                         Console.WriteLine("Insert plants location: ");
-                        plantLocation = Console.ReadLine();
+                        plantLocation = ProcessString();
 
                         //WATERING INTERVAL
                         Console.WriteLine("Insert watering interval: ");
@@ -136,7 +137,7 @@ namespace HKR_Plant_Tracker
                     case "3": //DELETE PLANT
                         Console.WriteLine("Delete plant\n");
                         Console.WriteLine("Insert plant ID: ");
-                        plantID = Console.ReadLine();
+                        plantID = ProcessString();
                         plantExist = CheckIfPlant(plantList, plantID);
 
                         if (plantExist)
@@ -158,7 +159,7 @@ namespace HKR_Plant_Tracker
                     case "4": //SEARCH FOR PLANT
                         Console.WriteLine("Search plant\n");
                         Console.WriteLine("Insert plant name: ");
-                        plantName = Console.ReadLine(); //IF EXISTS?
+                        plantName = ProcessString(); //IF EXISTS?
 
                         foreach (Plant _plant in plantList)
                         {
@@ -200,7 +201,7 @@ namespace HKR_Plant_Tracker
                         Console.WriteLine("Insert plant id: ");
                         do
                         {
-                            plantID = Console.ReadLine();
+                            plantID = ProcessString();
                             plantExist = CheckIfPlant(plantList, plantID);
                             if (!plantExist)
                             {
@@ -235,7 +236,7 @@ namespace HKR_Plant_Tracker
                     case "3": //VIEW LOGS FOR PLANT
                         Console.WriteLine("Viewing plant log\n");
                         Console.Write("Insert plant id: ");
-                        plantID = Console.ReadLine();
+                        plantID = ProcessString();
                         plantExist = CheckIfPlant(plantList, plantID);
 
                         if (plantExist)
@@ -315,6 +316,24 @@ namespace HKR_Plant_Tracker
             return checkThisInt;
         }
 
+        static string ProcessString()
+        {
+            string checkThisString;
+            do
+            {
+                checkThisString = Console.ReadLine();
+                if(String.IsNullOrEmpty(checkThisString))
+                {
+                    Console.WriteLine("The string can't be empty!");
+                }
+                else
+                {
+                    break;
+                }
+            } while (true);
+
+            return checkThisString;
+        }
         static bool CheckIfPlant(List<Plant> plantList, string plantID)
         {
             bool plantExists = false;
