@@ -14,14 +14,15 @@ namespace HKR_Plant_Tracker
             List<Plant> plantList = new List<Plant>();
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
+            bool needsWatering = false;
 
             DateTime dateAdded1 = new DateTime(2026, 3, 28);
             DateTime dateAdded2 = new DateTime(2026, 3, 24);
             DateTime dateAdded3 = new DateTime(2026, 4, 8);
 
-            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 2, dateAdded1);
+            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 3, dateAdded1);
             Plant plant2 = new Plant("PLT002", "Orchid", "Living Room", 4, dateAdded2);
-            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 1, dateAdded3);
+            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 5, dateAdded3);
             plantList.Add(plant); plantList.Add(plant2); plantList.Add(plant3);
             
             DateTime dateTime1 = new DateTime(2026, 4, 8);
@@ -45,12 +46,17 @@ namespace HKR_Plant_Tracker
 
             foreach(Plant _plant in plantList)
             {
-                _plant.CheckIfWaterToday();
+                needsWatering = _plant.CheckIfWaterToday(needsWatering);
+            }
+
+            if (!needsWatering)
+            {
+                Console.WriteLine("No plants needs watering today");
             }
 
             do
             {
-                Console.WriteLine("1.Plant Menu\n2.Log Menu\n9. Exit\n");
+                Console.WriteLine("\n1.Plant Menu\n2.Log Menu\n9. Exit\n");
 
                 menuChoice = errorHandling.IntChecker();
 
