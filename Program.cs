@@ -40,7 +40,13 @@ namespace HKR_Plant_Tracker
 
             Console.WriteLine("PLANT TRACKER \n **********\n");
 
-            StartUp(logList, plantList);
+            //StartUp(logList, plantList);
+            Console.WriteLine("These plants needs to be watered today: ");
+
+            foreach(Plant _plant in plantList)
+            {
+                _plant.CheckIfWaterToday();
+            }
 
             do
             {
@@ -270,39 +276,6 @@ namespace HKR_Plant_Tracker
                         break;
                 }              
             } while (menuChoice != "9");
-        }
-
-        static void StartUp(List<WateringLog> logList, List<Plant> plantList) //DESIGN CHOICE
-        {
-            
-            Console.WriteLine("These plants needs to be watered today: ");
-            foreach (Plant _plant in plantList)
-            {
-                int dayCount = DayCal(_plant);
-                if (dayCount % _plant.GetWateringDays() == 0 && dayCount != 0)
-                {
-                    
-                    Console.WriteLine($"{_plant.GetPlantID()} needs to be watered today.");
-                }
-            }         
-        }
-
-        static int DayCal(Plant plant)
-        {
-            int dayCount = 0;
-            DateTime countDate = plant.GetLastWatered();
-            Console.WriteLine(countDate);
-
-            while (true)
-            {
-                if (countDate.Date == DateTime.Now.Date)
-                {
-                    break;
-                }
-                countDate = countDate.AddDays(1);
-                dayCount++;
-            }
-            return dayCount;
-        }        
+        }       
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,11 +25,33 @@ namespace HKR_Plant_Tracker
 
         public void PrintDetails()
         {
-            Console.WriteLine($"Plant ID: {plantID}");
-            Console.WriteLine($"Plant name: {plantName}");
-            Console.WriteLine($"Location: {plantLocation}");
-            Console.WriteLine($"Watering interval: {wateringDays}");
-            Console.WriteLine($"Was last watered: {lastWatered.ToString("d")}\n");
+            Console.WriteLine($"Plant ID: {GetPlantID()}");
+            Console.WriteLine($"Plant name: {GetPlantName()}");
+            Console.WriteLine($"Location: {GetPlantLocation()}");
+            Console.WriteLine($"Watering interval: {GetWateringDays()}");
+            Console.WriteLine($"Was last watered: {GetLastWatered().ToString("d")}\n");
+        }
+
+        public void CheckIfWaterToday()
+        {
+            int dayCount = 0;
+            DateTime countDate = GetLastWatered();
+
+            while (true)
+            {
+                if (countDate.Date == DateTime.Now.Date)
+                {
+                    break;
+                }
+                countDate = countDate.AddDays(1);
+                dayCount++;
+            }
+
+            if (dayCount % GetWateringDays() == 0 && dayCount != 0)
+            {
+
+                Console.WriteLine($"{GetPlantID()}");
+            }
         }
 
         public string GetPlantID() { return plantID; }
