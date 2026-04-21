@@ -14,30 +14,7 @@ namespace HKR_Plant_Tracker
             List<Plant> plantList = new List<Plant>();
             List<WateringLog> logList = new List<WateringLog>();
             string menuChoice;
-            bool needsWatering = false;
-
-            DateTime dateAdded1 = new DateTime(2026, 3, 28);
-            DateTime dateAdded2 = new DateTime(2026, 3, 24);
-            DateTime dateAdded3 = new DateTime(2026, 4, 8);
-
-            Plant plant = new Plant("PLT001", "Tulip", "Kitchen", 3, dateAdded1);
-            Plant plant2 = new Plant("PLT002", "Orchid", "Living Room", 4, dateAdded2);
-            Plant plant3 = new Plant("PLT003", "Lily", "Bed Room", 5, dateAdded3);
-            plantList.Add(plant); plantList.Add(plant2); plantList.Add(plant3);
-            
-            DateTime dateTime1 = new DateTime(2026, 4, 8);
-            DateTime dateTime2 = new DateTime(2026, 3, 28);
-            DateTime dateTime3 = new DateTime(2026, 4, 2);
-            DateTime dateTime4 = new DateTime(2026, 4, 14);
-
-            WateringLog log1 = new WateringLog("PLT001", dateTime1, "Watered the Tulip");
-            plantList[0].SetLastWatered(dateTime1);
-            WateringLog log2 = new WateringLog("PLT002", dateTime2, "Watered the Orchid");
-            WateringLog log3 = new WateringLog("PLT002", dateTime3, "Spiced the Orchid");
-            plantList[1].SetLastWatered(dateTime3);
-            WateringLog log4 = new WateringLog("PLT003", dateTime4, "Watered the Lily");
-            plantList[2].SetLastWatered(dateTime4);
-            logList.Add(log1); logList.Add(log2); logList.Add(log3); logList.Add(log4);
+            bool needsWatering = false;           
 
             Console.WriteLine("PLANT TRACKER \n **********\n");           
             Console.WriteLine("These plants needs to be watered today: ");
@@ -111,7 +88,7 @@ namespace HKR_Plant_Tracker
                         
                         //PLANT NAME
                         Console.WriteLine("Insert plant name: ");
-                        plantName = errorHandling.ProcessString();                                            
+                        plantName = errorHandling.ProcessString();
 
                         //LOCATION
                         Console.WriteLine("Insert plants location: ");
@@ -135,7 +112,7 @@ namespace HKR_Plant_Tracker
 
                         Plant plant = new Plant(plantID, plantName, plantLocation, wateringInterval, DateTime.Now);
                         plantList.Add(plant);
-                        WateringLog log = new WateringLog(plantID, DateTime.Now, "New plant");
+                        WateringLog log = new WateringLog(plantID, DateTime.Now, "NEW PLANT");
                         logList.Add(log);
                         break;
                     case "2": //VIEW ALL PLANTS
@@ -230,7 +207,7 @@ namespace HKR_Plant_Tracker
 
                         //NOTES
                         Console.WriteLine("Insert notes: ");
-                        logNotes = Console.ReadLine();
+                        logNotes = errorHandling.ProcessString();
                         logDate = DateTime.Now;
 
                         WateringLog wateringLog = new WateringLog(plantID, logDate, logNotes);

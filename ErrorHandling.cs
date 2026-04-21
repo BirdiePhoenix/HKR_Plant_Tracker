@@ -43,6 +43,7 @@ namespace HKR_Plant_Tracker
                     break;
                 }
             } while (true);
+            checkThisString = checkThisString.ToUpper();
 
             return checkThisString;
         }
