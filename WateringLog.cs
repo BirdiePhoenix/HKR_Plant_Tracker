@@ -19,9 +19,9 @@ namespace HKR_Plant_Tracker
 
         public void PrintLog()
         {
-            Console.WriteLine($"Plant ID: {plantID}");
-            Console.WriteLine($"Last watered: {logDate}"); //Calculate days
-            Console.WriteLine($"Notes: {logNotes}\n");
+            Console.WriteLine($"Plant ID: {GetPlantID()}");
+            Console.WriteLine($"Last watered: {GetLogDate().ToString("d")}");
+            Console.WriteLine($"Notes: {GetLogNotes()}\n");
         }
 
 

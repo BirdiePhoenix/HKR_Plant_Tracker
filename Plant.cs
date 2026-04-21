@@ -32,7 +32,7 @@ namespace HKR_Plant_Tracker
             Console.WriteLine($"Was last watered: {GetLastWatered().ToString("d")}\n");
         }
 
-        public bool CheckIfWaterToday(bool needsWatering)
+        public bool WaterToday(bool needsWatering)
         {
             int dayCount = 0;
             DateTime countDate = GetLastWatered();

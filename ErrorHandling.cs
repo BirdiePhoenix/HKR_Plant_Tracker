@@ -62,7 +62,7 @@ namespace HKR_Plant_Tracker
             return plantExists;
         }
 
-        public bool CheckIfPlantNameExists(List<Plant> plantList, string plantName)
+        public bool CheckIfNameExists(List<Plant> plantList, string plantName)
         {
             bool plantExists = false;
 

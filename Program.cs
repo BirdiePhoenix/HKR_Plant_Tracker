@@ -39,14 +39,12 @@ namespace HKR_Plant_Tracker
             plantList[2].SetLastWatered(dateTime4);
             logList.Add(log1); logList.Add(log2); logList.Add(log3); logList.Add(log4);
 
-            Console.WriteLine("PLANT TRACKER \n **********\n");
-
-            //StartUp(logList, plantList);
+            Console.WriteLine("PLANT TRACKER \n **********\n");           
             Console.WriteLine("These plants needs to be watered today: ");
 
             foreach(Plant _plant in plantList)
             {
-                needsWatering = _plant.CheckIfWaterToday(needsWatering);
+                needsWatering = _plant.WaterToday(needsWatering);
             }
 
             if (!needsWatering)
@@ -155,7 +153,7 @@ namespace HKR_Plant_Tracker
 
                         if (plantExist)
                         {
-                            foreach (Plant _plant in plantList) //KOLLA OM BATTRE SATT
+                            foreach (Plant _plant in plantList)
                             {
                                 if (plantID == _plant.GetPlantID())
                                 {
@@ -166,14 +164,14 @@ namespace HKR_Plant_Tracker
                         }
                         else
                         {
-                            Console.WriteLine("A plant with that ID doesn't exists");
+                            Console.WriteLine("A plant with that ID doesn't exists\n");
                         }
                         break;
                     case "4": //SEARCH FOR PLANT
                         Console.WriteLine("Search plant\n");
                         Console.WriteLine("Insert plant name: ");
                         plantName = errorHandling.ProcessString();
-                        plantExist = errorHandling.CheckIfPlantNameExists(plantList, plantName);
+                        plantExist = errorHandling.CheckIfNameExists(plantList, plantName);
 
                         if (plantExist)
                         {
