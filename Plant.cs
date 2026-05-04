@@ -14,6 +14,7 @@ namespace HKR_Plant_Tracker
         private string plantLocation;
         private int wateringDays;
         private DateTime lastWatered;
+
         public Plant(string PlantID, string PlantName, string PlantLocation, int WateringDays, DateTime LastWatered)
         {
             this.plantID = PlantID;
